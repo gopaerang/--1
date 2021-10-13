@@ -1,0 +1,31 @@
+import discord
+from discord.ext import commands
+import time
+ 
+bot = commands.Bot(command_prefix=';')
+
+@bot.event
+async def on_ready():
+    print('다음으로 로그인합니다: ')
+    print(bot.user.name)
+    print('connection was succesful')
+    await bot.change_presence(status=discord.Status.online, activity=None)
+
+@bot.event
+async def on_voice_state_update(member, before, after):
+    if before.channel is None and after.channel is not None:
+        now = time.localtime()
+        await member.guild.system_channel.send(
+            "[{:02d}:{:02d}:{:02d}] {}님이 보이스 채널에 접속했습니다.".format(now.tm_hour, now.tm_min, now.tm_sec, member.nick)
+        )
+
+@bot.event
+async def on_voice_state_update(member, before, after):
+    if before.channel is not None and after.channel is None:
+        now = time.localtime()
+        await member.guild.system_channel.send(
+            "[{:02d}:{:02d}:{:02d}] {}님이 보이스 채널에서 나갔습니다.".format(now.tm_hour, now.tm_min, now.tm_sec, member.nick)
+        )
+@commands.has_permissions(administrator=True)
+
+bot.run('ODUwNjkzMTQwODc1NzA2NDE5.YLtbuQ.hMr4n_kXXwquSBhp9I1U5E8ugtg')
