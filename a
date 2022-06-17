@@ -75,20 +75,19 @@ def main():
         "P                                                                                           P",
         "P                                                                                           P",
         "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"]
+
     # build the level
-    p = Platform(x, y)
     for row in level:
         for col in row:
             if col == "P":
+                p = Platform(x, y)
                 platforms.append(p)
                 entities.add(p)
             if col == "E":
                 enemy = Enemy(x, y)
                 platforms.append(enemy)
                 entities.add(enemy)
-            if col == " ":
-                platforms.append(p.dot_floor_tile())
-                
+
     # 32 칸 옆으로 가서 또 그린다
             x += 64
         y += 64
@@ -135,6 +134,9 @@ def main():
 
 
         # draw background
+        for y in range(60):
+            for x in range(60):
+                screen.blit(bg, (x * 60, y * 60))
 
  
         camera.update(player)
@@ -402,15 +404,15 @@ class Platform(Entity):
         Entity.__init__(self)
         self.image = Surface((60, 119))
         self.image.convert()
-        self.image = pygame.image.load("E:/dot_tile1.png")
+        self.image.fill(Color("#f20201"))
         self.rect = Rect(x, y, 60, 119)
         self.hp = 1
         self.damage = 0
 
-    def dot_floor_tile(self, x, y):
+    def dot_floor_tile(self):
         self.image = Surface((60, 60))
         self.image.convert()
-        self.image = pygame.image.load("E:/dot_floor_tile1.png")
+        self.image.fill(Color("#210A1F"))
 
 
     def update(self):
